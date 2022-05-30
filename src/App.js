@@ -13,7 +13,7 @@ There are some WEB3 constants:
 ** votingAddress
 ** hardcode gas
 */
-const votingAddress = '0x0d2c1d2fb180c7bd3a67d0E967c063B343ca176b'
+const votingAddress = '0x6544A61FBD785Ea6beb4C30AF64CAd85cB2472F1'
 const gasPriceGwei = 7;
 const gasLimit = 600000;
 const web3 = new Web3('https://speedy-nodes-nyc.moralis.io/8f92744f1777e6b94d592c12/eth/rinkeby')
@@ -32,16 +32,16 @@ function App() {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
          
-        let data = await votingContract.methods.addVote(voteName, description)
+        let data = await votingContract.methods.addVote(voteName, description).encodeABI()
 
-        let rawTransaction = createRawTx(gasPriceGwei, gasLimit, votingAddress, 4, data)
+        let rawTx = await createRawTx(gasPriceGwei, gasLimit, votingAddress, data, 4)
 
         let hash = await provider.request({
           method: 'eth_sendTransaction',
           params: [
             {
               from: accounts[0],
-              ...rawTransaction
+              ...rawTx
             }
           ],
         })
@@ -66,16 +66,16 @@ function App() {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
          
-        let data = await votingContract.methods.addUser()
+        let data = await votingContract.methods.addUser(name, address).encodeABI()
 
-        let rawTransaction = createRawTx(gasPriceGwei, gasLimit, votingAddress, 4, data)
+        let rawTx = await createRawTx(gasPriceGwei, gasLimit, votingAddress, data, 4)
 
         await provider.request({
           method: 'eth_sendTransaction',
           params: [
             {
               from: accounts[0],
-              ...rawTransaction
+              ...rawTx
             }
           ],
         })
@@ -100,16 +100,16 @@ function App() {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
          
-        let data = await votingContract.methods.voteFor(ID)
+        let data = await votingContract.methods.voteFor(ID).encodeABI()
 
-        let rawTransaction = createRawTx(gasPriceGwei, gasLimit, votingAddress, 4, data)
+        let rawTx = await createRawTx(gasPriceGwei, gasLimit, votingAddress, data, 4)
 
         await provider.request({
           method: 'eth_sendTransaction',
           params: [
             {
               from: accounts[0],
-              ...rawTransaction
+              ...rawTx
             }
           ],
         })
@@ -133,16 +133,16 @@ function App() {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
          
-        let data = await votingContract.methods.voteAgainst(ID)
+        let data = await votingContract.methods.voteAgainst(ID).encodeABI()
 
-        let rawTransaction = createRawTx(gasPriceGwei, gasLimit, votingAddress, 4, data)
+        let rawTx = await createRawTx(gasPriceGwei, gasLimit, votingAddress, data, 4)
 
         await provider.request({
           method: 'eth_sendTransaction',
           params: [
             {
               from: accounts[0],
-              ...rawTransaction
+              ...rawTx
             }
           ],
         })
@@ -163,29 +163,44 @@ function App() {
     let data = await votingContract.methods.checkUsers().call()
     console.log(data);
 
-    var debugViewer = document.getElementById("debugViewer");
+    let usersField = document.getElementById("usersField");
 	
-	let ret = [];
-	let leftOffset = `${window.innerWidth - 500}px`;
-	let topOffset = `${window.innerHeight - 100}px`;
-	let text = '';
-	data.forEach(element => text += `{'name': ${element.VoterName}, 'address': ${element.VoterAddress}}<br>`);
-	for(let i = 0, len = text.length; i < len; i += 110) {
-		ret.push(text.substr(i, 110))
-	};
-	text = ret.join('<br>');
-	debugViewer.style = `margin-top: ${topOffset}; margin-left: ${leftOffset};`;
-	debugViewer.innerHTML = `${text}`;
+	  let ret = [];
+	  let leftOffset = `${window.innerWidth - 500}px`;
+	  let topOffset = `${window.innerHeight - 100}px`;
+	  let text = '';
 
-    /* users.innerHTML = {'name': data.voterName,
-                        'address': data.VoterAddress} */
-    
+	  data.forEach(element => text += `{'name': ${element.VoterName}, 'address': ${element.VoterAddress}}<br>`);
+	  for(let i = 0, len = text.length; i < len; i += 110) {
+	  	ret.push(text.substr(i, 110))
+	  };
+
+	  text = ret.join('<br>');
+	  usersField.style = `margin-top: ${topOffset}; margin-left: ${leftOffset};`;
+	  usersField.innerHTML = `${text}`;
+
   }
 
   async function _checkExpiredVotes() {
 
     let data = await votingContract.methods.checkExpiredVotes().call()
     console.log(data);
+
+    let expiredVotesField = document.getElementById("expiredVotesField");
+	
+	  let ret = [];
+	  let leftOffset = `${window.innerWidth - 500}px`;
+	  let topOffset = `${window.innerHeight - 100}px`;
+	  let text = '';
+
+	  data.forEach(element => text += `{'ID': ${element.ID}, 'name': ${element.name}, 'description': ${element.description}}<br>`);
+	  for(let i = 0, len = text.length; i < len; i += 110) {
+	  	ret.push(text.substr(i, 110))
+	  };
+
+	  text = ret.join('<br>');
+	  expiredVotesField.style = `margin-top: ${topOffset}; margin-left: ${leftOffset};`;
+	  expiredVotesField.innerHTML = `${text}`;
     
     
   }
@@ -195,10 +210,21 @@ function App() {
     let data = await votingContract.methods.checkOpenVotes().call()
     console.log(data);
 
-    var openVotes = document.getElementById("openVotes");
+    let usersField = document.getElementById("usersField");
+	
+	  let ret = [];
+	  let leftOffset = `${window.innerWidth - 500}px`;
+	  let topOffset = `${window.innerHeight - 100}px`;
+	  let text = '';
 
-    openVotes.innerHTML = data
+	  data.forEach(element => text += `{'ID': ${element.ID}, 'name': ${element.name}, 'description': ${element.description}}<br>`);
+	  for(let i = 0, len = text.length; i < len; i += 110) {
+	  	ret.push(text.substr(i, 110))
+	  };
 
+	  text = ret.join('<br>');
+	  usersField.style = `margin-top: ${topOffset}; margin-left: ${leftOffset};`;
+	  usersField.innerHTML = `${text}`;
     
  
   }
@@ -208,8 +234,8 @@ function App() {
 
       <div className="addSomething">
 
-        <button onClick={() => _addUser()}>add User</button>
-        <button onClick={() => _addVote}>add Vote</button>
+        <button onClick={() => _addUser('Лев', '0x99dB02471F82A64EF708DcfC8C3d022822530bf3')}>add User</button>
+        <button onClick={() => _addVote('Test function', 'I can all you want! That is cool, but you must work hard all time!')}>add Vote</button>
 
       </div>
 
@@ -232,7 +258,9 @@ function App() {
         </div>
       </div>
 	  
-	  <div id='debugViewer'></div>
+	  <div id='usersField'></div>
+    <div id='expiredVotesField'></div>
+    <div id='openVotesField'></div>
 
     </div>
   );
