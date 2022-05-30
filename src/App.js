@@ -65,7 +65,6 @@ function App() {
     if (provider) {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const userAddress = accounts[0]
          
         let data = await votingContract.methods.addUser()
 
@@ -100,7 +99,6 @@ function App() {
     if (provider) {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const userAddress = accounts[0]
          
         let data = await votingContract.methods.voteFor(ID)
 
@@ -134,7 +132,6 @@ function App() {
     if (provider) {
       try {
         const accounts = await provider.request({method: 'eth_requestAccounts'});
-        const userAddress = accounts[0]
          
         let data = await votingContract.methods.voteAgainst(ID)
 
