@@ -162,6 +162,11 @@ function App() {
 
     let data = await votingContract.methods.checkUsers().call()
     console.log(data);
+
+    var users = document.getElementById("users");
+
+    users.innerHTML = {'name': data.voterName,
+                        'address': data.VoterAddress}
     
   }
 
@@ -177,6 +182,11 @@ function App() {
 
     let data = await votingContract.methods.checkOpenVotes().call()
     console.log(data);
+
+    var openVotes = document.getElementById("openVotes");
+
+    openVotes.innerHTML = data
+
     
  
   }
@@ -199,11 +209,15 @@ function App() {
       </div>
 
       <div className="checking">
-
-        <button onClick={() => _checkUsers()}>checkUsers</button>
-        <button onClick={() => _checkExpiredVotes()}>checkExpiredVotes</button>
-        <button onClick={() => _checkOpenVotes}>checkOpenVotes</button>
-
+        <div id='users'>
+          <button onClick={() => _checkUsers()}>checkUsers</button>
+        </div>
+        <div id='expiredVotes'>
+          <button onClick={() => _checkExpiredVotes()}>checkExpiredVotes</button>
+        </div>
+        <div id='openVotes'>
+          <button onClick={() => _checkOpenVotes()}>checkOpenVotes</button>
+        </div>
       </div>
 
     </div>
