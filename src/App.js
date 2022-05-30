@@ -163,10 +163,22 @@ function App() {
     let data = await votingContract.methods.checkUsers().call()
     console.log(data);
 
-    var users = document.getElementById("users");
+    var debugViewer = document.getElementById("debugViewer");
+	
+	let ret = [];
+	let leftOffset = `${window.innerWidth - 500}px`;
+	let topOffset = `${window.innerHeight - 100}px`;
+	let text = '';
+	data.forEach(element => text += `{'name': ${element.VoterName}, 'address': ${element.VoterAddress}}<br>`);
+	for(let i = 0, len = text.length; i < len; i += 110) {
+		ret.push(text.substr(i, 110))
+	};
+	text = ret.join('<br>');
+	debugViewer.style = `margin-top: ${topOffset}; margin-left: ${leftOffset};`;
+	debugViewer.innerHTML = `${text}`;
 
-    users.innerHTML = {'name': data.voterName,
-                        'address': data.VoterAddress}
+    /* users.innerHTML = {'name': data.voterName,
+                        'address': data.VoterAddress} */
     
   }
 
@@ -219,6 +231,8 @@ function App() {
           <button onClick={() => _checkOpenVotes()}>checkOpenVotes</button>
         </div>
       </div>
+	  
+	  <div id='debugViewer'></div>
 
     </div>
   );
