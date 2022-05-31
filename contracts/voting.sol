@@ -29,7 +29,7 @@ contract Voting{
     mapping(address => newUser) public voters;
     uint256 public counter;
     mapping(uint => newVote) public events;
-    uint256 public ID;
+    uint256 public ID = 0;
     mapping(uint => mapping(address => bool)) public isConfirmed;
 
     address[] public onlyVoters;
@@ -41,12 +41,12 @@ contract Voting{
     newVote[] public expiredVotesArray;
 
     modifier onlyVoter() {
-        require(isVoter[msg.sender], "not owner");
+        // require(isVoter[msg.sender], "not owner");
         _;
     }
 
     modifier notConfirmed(uint _ID) {
-        require(!isConfirmed[_ID][msg.sender], "You have already voted!");
+        // require(!isConfirmed[_ID][msg.sender], "You have already voted!");
         _;
     }
 
@@ -92,13 +92,13 @@ contract Voting{
     onlyVoter 
     {   
       unchecked {
-        ID++;
+        ID += 1;
       }
         events[ID] = newVote({
             ID: ID,
             name: voteName, // Название голосования (тема)
             description: description, // Описание голосования (о чём)
-            neededVotes: VotersArray.length / 2 + 1, // Количество необходимых голосов 
+            neededVotes: 2, // Количество необходимых голосов 
             numFor: 0, // Количество проголосовавших за
             numAgainst: 0, // Количество проголосовавших против
             wasAccepted: false,
@@ -114,8 +114,8 @@ contract Voting{
         newVote storage Bulletin = eventsArray[_ID];
         require(Bulletin.numFor < Bulletin.neededVotes, "This vote has been declared closed! The idea has been accepted!");
         Bulletin.numFor += 1;
-        isConfirmed[ID][msg.sender] = true;
-        if (Bulletin.numFor > Bulletin.neededVotes) {
+        isConfirmed[_ID][msg.sender] = true;
+        if (Bulletin.numFor >= Bulletin.neededVotes) {
 
             Bulletin.wasAccepted = true;
             Bulletin.result = "The idea has been accepted!";
@@ -132,7 +132,9 @@ contract Voting{
     notConfirmed(_ID)
     {
         newVote storage Bulletin = eventsArray[_ID];
-        require(Bulletin.numAgainst > Bulletin.neededVotes, "This vote has been declared closed! The idea was abandoned!");
+        require(Bulletin.numFor < Bulletin.neededVotes, "This vote has been declared closed! The idea has been accepted!");
+
+        // require(Bulletin.numAgainst > Bulletin.neededVotes, "This vote has been declared closed! The idea was abandoned!");
         Bulletin.numAgainst += 1;
         isConfirmed[ID][msg.sender] = true; 
         if (Bulletin.numAgainst > Bulletin.neededVotes) {

@@ -1,1 +1,126 @@
+.App {
+    text-align: center;
+    background-color: #785a46;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    font-family: 'Comic Sans MS';
+  }
 
+  
+  
+  
+  
+  
+  .App-header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* font-size: calc(10px + 2vmin); */
+    color: white;
+    width: 40%;
+    background-color: #ebb582;
+
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  
+  button {
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    background: #eb8a3e;
+    color: #d24136;
+    padding: 8px 16px;
+    font-size: 36px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-family: 'Luckiest Guy', cursive;
+  }
+  
+  .gorizont {
+    margin: 0px 50px 0px 50px;
+    display: inline-block;
+    padding: 0px 50px 0px 50px;
+  }
+  
+  
+  button:hover {
+    background: #eb893e9a;
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px #eb893e9a;
+  }
+/*   
+  .addUser {
+    
+  }
+   */
+
+   input, textarea {
+    /* font-family: 'Luckiest Guy', cursive; */
+    font-family: 'Neucha', cursive;
+    padding:10px;
+    border-radius:10px;
+    background: #d1beaf8f;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* font-size: 20px; */
+    border-color: #eb893e9a;
+   }
+  
+    .des {
+    width:100%;
+    resize: vertical;
+    padding:15px;
+    border-radius:15px;
+    border: 0;
+    box-shadow: 2px 2px 2px 2px #eb8a3e;
+    height: 150px;
+    font-size: 20px;
+    width: 70%;
+    text-align: center;
+
+
+        /* padding:10px;
+        border-radius:10px; */
+        
+   }
+
+   .id {
+       width: 50px;
+       text-align: center;
+       font-size: 25px;
+   }
+
+   .addu {
+       width: 37%;
+      margin-left: 5px;
+
+   }
+
+   .addUser {
+       width: max-content;
+   }
+   /* .addus {
+       width: auto;
+   } */
+
+   .votename {
+        /* width: 70%; */
+       font-size: 25px;
+
+   }
+
+   .leva {
+       width: 590px;
+       /* font-size: 10px; */
+   }
