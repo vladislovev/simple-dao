@@ -13,7 +13,7 @@ There are some WEB3 constants:
 ** votingAddress
 ** hardcode gas
 */
-const votingAddress = '0xfA0307771eFD8a219086003BBB5acD13aC6F32Ff'
+let votingAddress = '0xfA0307771eFD8a219086003BBB5acD13aC6F32Ff'
 const gasPriceGwei = 7;
 const gasLimit = 600000;
 const web3 = new Web3('https://speedy-nodes-nyc.moralis.io/8f92744f1777e6b94d592c12/eth/rinkeby')
@@ -234,10 +234,20 @@ function App() {
   }
   const [id, setid] = useState()
 
+  function changeAddress(newAddress) {
+    votingAddress = newAddress;
+  }
+
+  const [newAddr, setnewAddr] = useState()
+
+
   return (
     <div className="App">
 
       <div className="App-header">
+      <input  onChange={e => setnewAddr(e.target.value)} placeholder="new Address" />
+      <button className='asas' onClick={() => changeAddress(newAddr)}>Сменить адрес</button>
+
           <div className='addUser'>
         <button onClick={() => _addUser(name, address)}>Добавить пользователя</button>
         <div className='a'>

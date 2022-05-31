@@ -115,8 +115,9 @@
    } */
 
    .votename {
-        /* width: 70%; */
-       font-size: 25px;
+        width: 70%;
+       font-size: 20px;
+       text-align: center;
 
    }
 
@@ -124,3 +125,27 @@
        width: 590px;
        /* font-size: 10px; */
    }
+
+   input:focus, input:active {
+    border-color: #eb8a3e;
+  }
+
+  /* input:invalid {
+    background: hsla(0, 90%, 70%, 1);
+  }
+  input:valid {
+    background: hsla(100, 90%, 70%, 1);
+  }
+  input:focus {
+    background: hsla(100, 90%, 70%, 1);
+  }
+  input:required {
+    border-color: #800000;
+    border-width: 3px;
+  } */
+
+  .asas {
+      font-size: 15px;
+      text-align: center;
+
+  }
